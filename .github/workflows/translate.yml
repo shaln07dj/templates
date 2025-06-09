@@ -33,8 +33,8 @@ jobs:
 
       - name: Commit and push changes
         run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "shaln07dj"
+          git config --global user.email "shalnsingh@outlook.com"
           git add .
           git diff --cached --quiet || (
             git commit -m "🤖 Auto-translated MJML files [skip ci]"
