@@ -1,8 +1,8 @@
 import os
-from google.generativeai import configure, GenerativeModel
+from gemini_sdk import Client, types  # Replace with your actual Gemini client import
 
 API_KEY = os.getenv("GEMINI_API_KEY")
-configure(api_key=API_KEY)
+if not API_KEY:
+    raise ValueError("GEMINI_API_KEY environment variable not set")
 
-def get_gemini_client():
-    return GenerativeModel("gemini-1.5-flash")
+client = Client(api_key=API_KEY)
