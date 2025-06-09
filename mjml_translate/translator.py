@@ -2,8 +2,9 @@ import os
 import re
 import subprocess
 import logging
-import google.generativeai as genai
-from google.generativeai import types
+from google import genai
+from google.genai import types
+
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
@@ -30,7 +31,7 @@ def gemini_call(language: str, lang_code: str, templateContent: str):
         sys_instruct = (
             f"Convert the following MJML code to {language} (also identified by language code: {lang_code}). "
             "Don't provide any filler content or explanations, just pure code! Never add any attributes to "
-            "the starting tag, i.e., '<mjml>' or it's closing tag at EOF </mjml> (regardless of language). "
+            "the starting tag, i.e., '<mjml>' or its closing tag at EOF </mjml> (regardless of language). "
             "I'm only going to be fetching the code enclosed between <mjml> and </mjml> so it better follow this exact format."
         )
         response = genai.generate_content(
