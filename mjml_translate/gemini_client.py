@@ -1,5 +1,5 @@
 import os
-from google.generativeai import Client, types  # Adjust this import to your real Gemini SDK
+from google.generativeai import Client, types  # Adjust import to your actual Gemini SDK
 
 API_KEY = os.getenv("GEMINI_API_KEY")
 if not API_KEY:
