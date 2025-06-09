@@ -10,8 +10,10 @@ permissions:
 jobs:
   generate-files:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
@@ -20,9 +22,9 @@ jobs:
           git config --global user.name "shaln07dj"
           git config --global user.email "shalnsingh@outlook.com"
 
-      - name: Run script
+      - name: Run Python script
         run: |
-          ./generate-content.sh
+          python3 generate-content.py
 
       - name: Commit and push changes
         run: |
