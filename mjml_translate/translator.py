@@ -2,18 +2,14 @@ import os
 import re
 import subprocess
 import logging
-from google import genai
-from google.genai import types
+from google.genai import types # Import types here if needed for GenerationConfig
 
+# Import the pre-initialized Gemini client
+from .gemini_client import client
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
-API_KEY = os.getenv("GEMINI_API_KEY")
-if not API_KEY:
-    raise ValueError("GEMINI_API_KEY environment variable not set")
-
-genai.configure(api_key=API_KEY)
-
+# Mapping for language codes to full language names
 langMapping = {
     "es": "Spanish",
     "fr": "French",
@@ -27,6 +23,9 @@ langMapping = {
 }
 
 def gemini_call(language: str, lang_code: str, templateContent: str):
+    """
+    Calls the Gemini API to translate MJML content to the specified language.
+    """
     try:
         sys_instruct = (
             f"Convert the following MJML code to {language} (also identified by language code: {lang_code}). "
@@ -34,8 +33,8 @@ def gemini_call(language: str, lang_code: str, templateContent: str):
             "the starting tag, i.e., '<mjml>' or its closing tag at EOF </mjml> (regardless of language). "
             "I'm only going to be fetching the code enclosed between <mjml> and </mjml> so it better follow this exact format."
         )
-        response = genai.generate_content(
-            model="gemini-1.5-flash",
+        response = client.generate_content(
+            model="gemini-1.5-flash", # Using gemini-1.5-flash for faster responses
             contents=[templateContent],
             generation_config=types.GenerationConfig(
                 system_instruction=sys_instruct
@@ -44,6 +43,7 @@ def gemini_call(language: str, lang_code: str, templateContent: str):
         content = response.text
         logging.info(f"Received response from Gemini for {language}")
 
+        # Extract content between <mjml> and </mjml> tags
         match = re.search(r'(?i)<mjml>.*?</mjml>', content, re.DOTALL)
         final_file = match.group(0) if match else None
         if not final_file:
@@ -54,6 +54,9 @@ def gemini_call(language: str, lang_code: str, templateContent: str):
         return None
 
 def get_changed_mjml_files():
+    """
+    Identifies MJML files that have changed in the latest Git commit.
+    """
     try:
         result = subprocess.run(
             ["git", "diff", "--name-only", "HEAD^", "HEAD"],
@@ -68,6 +71,9 @@ def get_changed_mjml_files():
         return []
 
 def translate_changed_mjml_files():
+    """
+    Translates changed MJML files into various languages and saves them.
+    """
     changed_files = get_changed_mjml_files()
     if not changed_files or changed_files == ['']:
         logging.info("No MJML files changed. Exiting.")
@@ -90,15 +96,16 @@ def translate_changed_mjml_files():
         folder = os.path.dirname(filepath)
         base_filename = os.path.splitext(os.path.basename(filepath))[0]
 
+        # Determine original language if present in filename (e.g., 'template_en.mjml')
         if '_' in base_filename:
             base, original_lang = base_filename.rsplit('_', 1)
         else:
             base = base_filename
-            original_lang = 'en'
+            original_lang = 'en' # Default to English if no language code is present
 
         for code, language in langMapping.items():
             if code == original_lang:
-                continue
+                continue # Skip translating to the original language
 
             translated = gemini_call(language, code, content)
             if translated is None:
