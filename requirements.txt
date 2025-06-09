@@ -1,0 +1,9 @@
+# Core dependencies
+requests>=2.31.0
+
+# Gemini client SDK (use actual name)
+# Replace with your SDK or API client package
+google-generativeai>=0.5.1  # If you're using Google's Gemini Python SDK
+
+# Optional: For better logging and shell execution
+rich>=13.7.1

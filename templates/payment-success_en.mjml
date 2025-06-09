@@ -1,0 +1,49 @@
+<mjml>
+  <mj-head>
+    <mj-title>Payment Success</mj-title>
+    <mj-preview>Your payment was successful!</mj-preview>
+    <mj-style>
+      .heading-text div {
+        font-size: 24px !important;
+        font-weight: bold !important;
+        color: #333333 !important;
+      }
+      .normal-text div {
+        font-size: 16px !important;
+        color: #555555 !important;
+      }
+    </mj-style>
+  </mj-head>
+
+  <mj-body background-color="#f6f9fc">
+    <mj-section background-color="#ffffff" padding="20px">
+      <mj-column>
+        <mj-image width="100px" src="https://img.icons8.com/color/96/000000/checked--v2.png" alt="Success Icon" />
+        <mj-text align="center" css-class="heading-text">Payment Successful!</mj-text>
+        <mj-divider border-color="#dddddd" />
+        <mj-text css-class="normal-text">
+          Hi [User's Name],<br/><br/>
+          Thank you for your payment. We’ve successfully received your payment of <strong>₹[Amount]</strong> on <strong>[Date]</strong>.
+        </mj-text>
+        <mj-text css-class="normal-text">
+          <strong>Transaction ID:</strong> [Transaction ID]<br/>
+          <strong>Order ID:</strong> [Order ID]
+        </mj-text>
+        <mj-button background-color="#28a745" color="#ffffff" href="[Link to Order or Dashboard]">
+          View Order Details
+        </mj-button>
+      </mj-column>
+    </mj-section>
+
+    <mj-section background-color="#f6f9fc" padding="10px">
+      <mj-column>
+        <mj-text font-size="12px" color="#999999" align="center">
+          If you have any questions, feel free to contact our support at <a href="mailto:support@example.com">support@example.com</a>.
+        </mj-text>
+        <mj-text font-size="12px" color="#cccccc" align="center">
+          &copy; 2025 Your Company Name. All rights reserved.
+        </mj-text>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>
