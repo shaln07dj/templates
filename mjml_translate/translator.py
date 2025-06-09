@@ -2,9 +2,16 @@ import os
 import re
 import subprocess
 import logging
-from .gemini_client import client, types
+import google.generativeai as genai
+from google.generativeai import types
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+
+API_KEY = os.getenv("GEMINI_API_KEY")
+if not API_KEY:
+    raise ValueError("GEMINI_API_KEY environment variable not set")
+
+genai.configure(api_key=API_KEY)
 
 langMapping = {
     "es": "Spanish",
@@ -26,10 +33,12 @@ def gemini_call(language: str, lang_code: str, templateContent: str):
             "the starting tag, i.e., '<mjml>' or it's closing tag at EOF </mjml> (regardless of language). "
             "I'm only going to be fetching the code enclosed between <mjml> and </mjml> so it better follow this exact format."
         )
-        response = client.models.generate_content(
-            model="gemini-2.0-flash",
-            config=types.GenerateContentConfig(system_instruction=sys_instruct),
-            contents=[templateContent]
+        response = genai.generate_content(
+            model="gemini-1.5-flash",
+            contents=[templateContent],
+            generation_config=types.GenerationConfig(
+                system_instruction=sys_instruct
+            )
         )
         content = response.text
         logging.info(f"Received response from Gemini for {language}")
