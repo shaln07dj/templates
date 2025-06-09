@@ -17,8 +17,8 @@ jobs:
 
       - name: Set up Git
         run: |
-          git config --global user.name "alan01"
-          git config --global user.email "alan@outlook.com"
+          git config --global user.name "shaln07dj"
+          git config --global user.email "shalnsingh@outlook.com"
 
       - name: Run script
         run: |
