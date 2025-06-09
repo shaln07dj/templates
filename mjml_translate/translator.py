@@ -2,9 +2,9 @@ import os
 import re
 import subprocess
 import logging
-from google.genai import types # Import types here if needed for GenerationConfig
+from google.genai import types # Keep this line for 'types'
 
-# Import the pre-initialized Gemini client
+# Import ONLY the 'client' object from your gemini_client module
 from .gemini_client import client
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
